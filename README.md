@@ -40,6 +40,7 @@ dpage/pgadmin4
 ```python
 docker network create pg-network
 ```
+**In the pgAdmin interface**
 - create a new server
 - input the name in general
 - Connection:
@@ -55,3 +56,9 @@ docker network create pg-network
                     - yellow_taxi_data
 
 - tools -> query tool -> write your own query
+
+## conver jupyter notebook to script
+```python
+jupyter nbconvert --to=script upload_data.ipynb
+```
+
