@@ -62,3 +62,13 @@ docker network create pg-network
 jupyter nbconvert --to=script upload_data.ipynb
 ```
 
+## Ingest data with the script
+url="https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-01.csv.gz"
+python3 ingest_data.py \
+    --user=labber \
+    --password=labber \
+    --host=localhost \
+    --port=5432 \
+    --database=ny_taxi \
+    --table=yellow_taxi_trips \
+    --url=${url}
