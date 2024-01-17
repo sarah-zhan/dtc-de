@@ -63,6 +63,7 @@ jupyter nbconvert --to=script upload_data.ipynb
 ```
 
 ## Ingest data with the script
+```python
 url="https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-01.csv.gz"
 python3 ingest_data.py \
     --user=labber \
@@ -72,3 +73,32 @@ python3 ingest_data.py \
     --database=ny_taxi \
     --table=yellow_taxi_trips \
     --url=${url}
+```
+## Dockerfile
+```python
+FROM python:3.10
+
+RUN apt-get install wget
+RUN pip install pandas sqlalchemy pgcli psycopg2-binary
+
+WORKDIR /app
+COPY ingest_data.py ingest_data.py
+
+ENTRYPOINT [ "python3", "ingest_data.py" ]
+```
+```python
+docker build -t taxi_ingest:v001 .
+
+# user ifconfig to find the IP address -- under "eth0"
+url="https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-01.csv.gz"
+docker run -it \
+    --network=pg-network \
+    taxi_ingest:v001 \
+        --user=labber \
+        --password=labber \
+        --host=172.23.55.174 \
+        --port=5432 \
+        --database=ny_taxi \
+        --table=yellow_taxi_trips \
+        --url=${url}
+```

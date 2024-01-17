@@ -55,8 +55,8 @@ def main(params):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Ingest CSV data to Postgres.')
     # add arguments
-    parser.add_argument('--user', help='an integer for the accumulator')
-    parser.add_argument('--password', help='an integer for the accumulator')
+    parser.add_argument('--user', help='user name for postgres')
+    parser.add_argument('--password', help='password for postgres')
     parser.add_argument('--host', help='host for postgres')
     parser.add_argument('--port', help='port for postgres')
     parser.add_argument('--database', help='database name')
