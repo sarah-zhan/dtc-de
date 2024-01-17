@@ -90,13 +90,16 @@ ENTRYPOINT [ "python3", "ingest_data.py" ]
 docker build -t taxi_ingest:v001 .
 
 # user ifconfig to find the IP address -- under "eth0"
-url="https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-01.csv.gz"
+# can run python -m http:server to make the ingestion faster
+python3 -m http.server 8000
+
+url="http://172.23.55.174:8000/yellow_tripdata_2021-01.csv.gz"
 docker run -it \
     --network=pg-network \
     taxi_ingest:v001 \
         --user=labber \
         --password=labber \
-        --host=172.23.55.174 \
+        --host=pg-database \
         --port=5432 \
         --database=ny_taxi \
         --table=yellow_taxi_trips \
