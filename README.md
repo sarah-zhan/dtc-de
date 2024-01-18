@@ -105,3 +105,45 @@ docker run -it \
         --table=yellow_taxi_trips \
         --url=${url}
 ```
+
+## Docker-compose
+intall
+```python
+# Download the Docker Compose binary
+sudo curl -L "https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+# Apply executable permissions to the binary
+sudo chmod +x /usr/local/bin/docker-compose
+
+# Verify the installation
+docker-compose --version
+```
+yaml file
+```python
+services:
+  pgdatabase:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=labber
+      - POSTGRES_PASSWORD=labber
+      - POSTGRES_DB=ny_taxi
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./ny_taxi_postgres_data:/var/lib/postgresql/data:rw
+    networks:
+      - pg-network
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=labber
+    ports:
+      - "8080:80"
+    networks:
+      - pg-network
+networks:
+  pg-network:
+    name: pg-network
+    external: true
+```
