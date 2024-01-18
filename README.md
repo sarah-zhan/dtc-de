@@ -106,8 +106,8 @@ docker run -it \
         --url=${url}
 ```
 
-## Docker-compose
-intall
+## Docker-compose to build connection and inject data
+- intall
 ```python
 # Download the Docker Compose binary
 sudo curl -L "https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -118,7 +118,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 # Verify the installation
 docker-compose --version
 ```
-yaml file
+- yaml file
 ```python
 services:
   pgdatabase:
@@ -146,4 +146,12 @@ networks:
   pg-network:
     name: pg-network
     external: true
+```
+- run yaml
+```python
+docker-compose up -d
+```
+- stop yaml
+```python
+docker-compose down
 ```
