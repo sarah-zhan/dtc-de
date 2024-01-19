@@ -155,3 +155,15 @@ docker-compose up -d
 ```python
 docker-compose down
 ```
+
+## Google Cloud set up
+- Go to .ssh folder -> `ssh-keygen -t rsa -f your-file-name -C cloud-username -b 2048`
+- you can leave the password as empty
+- you will have a private and public key in .ssh folder
+- put the public key (xx.pub) to google cloud
+- Compute Engine -> settings -> metadata -> SSH KEYS -> ADD -> (in terminal) cat xx.pub -> copy the info and paste the key in google cloud -> save
+- VM instances -> create a new instance -> pick your configuration
+- remember the External IP
+- `ssh -i ~/.ssh/keyname username@External IP`
+- use `htop` to check the machines; `F10` exit
+- `gcloud --version` check google cloud info
