@@ -263,6 +263,16 @@ resource "google_storage_bucket" "zoomcamp_bucket" {
     }
   }
 }
+
+resource "google_bigquery_dataset" "demo" {
+  dataset_id                      = "demo_dataset"
+  default_partition_expiration_ms = 2592000000  # 30 days
+  default_table_expiration_ms     = 31536000000 # 365 days
+  description                     = "demo dataset"
+  location                        = "US"
+  max_time_travel_hours           = 96 # 4 days
+
+}
 ```
 
 ## Terraform
@@ -272,6 +282,15 @@ resource "google_storage_bucket" "zoomcamp_bucket" {
 - terraform apply
 - terraform destroy (delete resources)
 
+## add variables.tf
+for example
+```python
+variable "dataset_name" {
+  type = string
+  default = "demo_dataset"
+  description = "value of the demo dataset"
+}
+```
 
 ## add credential - transfer files
 - `sudo apt-get install openssh-server`
