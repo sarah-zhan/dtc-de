@@ -167,3 +167,50 @@ docker-compose down
 - `ssh -i ~/.ssh/keyname username@External IP`
 - use `htop` to check the machines; `F10` exit
 - `gcloud --version` check google cloud info
+- we can create a config file to login gl
+  - config file
+    ```python
+    Host vm instance name
+    HostName your-gl-external-ip
+    User gl-username
+    IdentityFile ~/.ssh/key-name
+    ```
+
+## install ananconda
+- download from https://www.anaconda.com/download -> choose your own installer -> right click, copy link
+- for Linux `wget https://repo.anaconda.com/archive/Anaconda3-2023.09-0-Linux-x86_64.sh`
+- press "enter" until it asks you to accept the license -> "yes" -> "yes" initialize anaconda
+- `ssh de-zoomcamp` to login
+- `ctrl+d` to logout
+
+## install docker
+```python
+sudo apt-get update
+sudo apt-get install docker.io
+```
+
+## connect to remote-shh
+- vscode install Remote-SSH extension
+- F1 KEY -> Add new host -> de-zoomcamp (you might need to adjust your config file if there is a connection issue)
+- every time you restart the server, the external IP may change
+
+## docker without sudo
+https://github.com/sindresorhus/guides/blob/main/docker-without-sudo.md
+- Add the docker group if it doesn't already exist `sudo groupadd docker`
+- Add the connected user $USER to the docker group `sudo gpasswd -a $USER docker`
+- Restart the docker daemon `sudo service docker restart`
+- Test whether it works -> `docker run hello-world`
+
+## docker-compose in gc
+https://github.com/docker/compose/releases/download/v2.24.1/docker-compose-linux-x86_64
+- make a folder bin
+- in bin folder install docker-compose
+- `wget https://github.com/docker/compose/releases/download/v2.24.1/docker-compose-linux-x86_64`
+- make it executable `chmod +x docker-compose`
+- make it visible to any directories `nano .bashrc`
+- at the end of the document add `export PATH="${HOME}/bin:${PATH}"`
+- `ctrl + o` to save the file
+- `ctrl + x` to exit
+- download `git clone https://github.com/sarah-zhan/dtc-de.git`
+- `docker network create pg-network` (optional, if the yaml returns error)
+- run yaml file `docker-compose up -d`
