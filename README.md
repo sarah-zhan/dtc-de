@@ -291,6 +291,7 @@ variable "dataset_name" {
   description = "value of the demo dataset"
 }
 ```
+**make sure to update .gitignore file to include terreform info**
 
 ## add credential - transfer files
 - `sudo apt-get install openssh-server`
@@ -317,5 +318,5 @@ variable "dataset_name" {
 ## Google Cloud
 - Set the Environment Variable: `export GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/key-file.json`
 - Use the gcloud SDK with the Service Account: `gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS`
-
+- remove credential `unset GOOGLE_APPLICATION_CREDENTIALS`
 

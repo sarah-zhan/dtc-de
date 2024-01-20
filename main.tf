@@ -8,13 +8,13 @@ terraform {
 }
 
 provider "google" {
-  project     = "data-engineering-409902"
-  region      = "us-west1"
+  project     = var.project_id
+  region      = var.region
 }
 
 resource "google_storage_bucket" "terraform_bucket" {
-  name          = "data-engineering-409902-terraform-bucket-01"
-  location      = "US"
+  name          = var.bucket_name
+  location      = var.location
   force_destroy = true
 
   lifecycle_rule {
@@ -25,4 +25,13 @@ resource "google_storage_bucket" "terraform_bucket" {
       type = "AbortIncompleteMultipartUpload"
     }
   }
+}
+
+resource "google_bigquery_dataset" "demo" {
+  dataset_id                      = var.dataset_name
+  default_partition_expiration_ms = var.default_partition_expiration_ms  # 30 days
+  default_table_expiration_ms     = var.default_table_expiration_ms # 365 days
+  description                     = var.dataset_name
+  location                        = var.location
+  max_time_travel_hours           = var.max_time_travel_hours # 4 days
 }
