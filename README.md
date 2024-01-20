@@ -214,3 +214,89 @@ https://github.com/docker/compose/releases/download/v2.24.1/docker-compose-linux
 - download `git clone https://github.com/sarah-zhan/dtc-de.git`
 - `docker network create pg-network` (optional, if the yaml returns error)
 - run yaml file `docker-compose up -d`
+
+## forward the port to local
+- show vscode terminal -> "PORTS" -> forward Port
+- access database `pgcli -h localhost -u labber -d ny_taxi`
+- add port 8080 -> localhost:8080 -> login pgadmin
+
+## run upload_data
+- jupyter notebook
+- copy the link localhost:8888..... in the browser (can also do it in vscode)
+- test to insert 100 rows of data
+- try whether it works `pgcli -h localhost -u labber -d ny_taxi`
+- `dt`
+
+## download terraform
+- download `wget https://releases.hashicorp.com/terraform/1.7.0/terraform_1.7.0_linux_amd64.zip`
+- `unzip terraform_1.7.0_linux_amd64.zip`
+- `rm terraform_1.7.0_linux_amd64.zip`
+
+## Configure Terraform
+- main.tf
+```python
+terraform {
+  required_providers {
+    google = {
+      source = "hashicorp/google"
+      version = "5.12.0"
+    }
+  }
+}
+
+provider "google" {
+  project     = "my-project-id"
+  region      = "us-central1"
+}
+
+resource "google_storage_bucket" "zoomcamp_bucket" {
+  name          = "terraform-bucket-01" # this name must be globaly unique
+  location      = "US"
+  force_destroy = true
+
+  lifecycle_rule {
+    condition {
+      age = 1
+    }
+    action {
+      type = "AbortIncompleteMultipartUpload"
+    }
+  }
+}
+```
+
+## Terraform
+- sudo snap install terraform --classic
+- terraform init (after terraform, provider block in main.tf)
+- terraform plan (after resource block in main.tf)
+- terraform apply
+- terraform destroy (delete resources)
+
+
+## add credential - transfer files
+- `sudo apt-get install openssh-server`
+- in ssh__config add `Subsystem sftp internal-sftp`
+- generate ssh key `ssh-keygen -t rsa -b 2048 -f ~/.ssh/id_rsa -C "your_email@example.com"`
+- add the key to gl `gcloud compute instances add-metadata INSTANCE_NAME --metadata ssh-keys="USERNAME:$(cat ~/.ssh/id_rsa.pub)"`
+- export GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/key-file.json
+- Create a Service Account in the console (IAM)
+- Create and Download JSON Key File: "IAM & Admin" > "Service accounts," select your service account, and click on "Create Key." Choose JSON as the key type and download the key file.
+- Set the Environment Variable: `export GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/key-file.json`
+- Verify the Configuration: `echo $GOOGLE_APPLICATION_CREDENTIALS`
+- Use the gcloud SDK with the Service Account: `gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS`
+- `mkdir -p ~/.ssh` (optional)
+- `chmod 700 ~/.ssh` (optional)
+- `touch ~/.ssh/authorized_keys`
+- `chmod 600 ~/.ssh/authorized_keys`
+- `echo "your_public_key" >> ~/.ssh/authorized_keys`
+- `sftp username@external_ip` / `sftp instance_name` SFTP (Secure File Transfer Protocol) is a secure alternative to FTP for transferring files.
+- create a folder -> cd to that folder
+- send the file to that folder `put local_file.txt`
+- download fild `get remote_file.txt`
+- `exit` for exit
+
+## Google Cloud
+- Set the Environment Variable: `export GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/key-file.json`
+- Use the gcloud SDK with the Service Account: `gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS`
+
+
