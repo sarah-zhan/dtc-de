@@ -417,3 +417,12 @@ use different method
       assert output['passenger_count'].isin([0]).sum() == 0, 'There are rides with 0 passengers'
 ```
 ![transform_data](transform_data.png)
+
+- export data
+  - Data exporter -> Python -> PostgreSQL
+  - update the schema name, table name, config_profile
+![export_data](./photos/export_data.png)
+
+- quick test
+  - Data loader -> SQL
+![load_taxi_data_test](./photos/load_taxi_data_test.png)
