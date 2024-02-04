@@ -366,3 +366,54 @@ docker compose up
 - Edit pipeline -> Data loader -> SQL -> Name(edit it) -> save
 - Connection (PostgreSQL) -> Profile (dev) -> choose "Use raw SQL" -> run block
 ![sqlblock](sqlblock.png)
+
+use different method
+- Edit pipeline -> Python -> API -> Name(edit it) -> save
+- add url in the template url = 'https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-01.csv.gz'
+- declare deta types
+```python
+    # declear data type
+    taxi_dtypes = {
+        'VendorID': pd.Int64Dtype(),
+        'passenger_count': pd.Int64Dtype(),
+        'trip_distance': float,
+        'RatecodeID': pd.Int64Dtype(),
+        'store_and_fwd_flag': str,
+        'PULocationID': pd.Int64Dtype(),
+        'DOLocationID': pd.Int64Dtype(),
+        'payment_type': pd.Int64Dtype(),
+        'fare_amount': float,
+        'extra': float,
+        'mta_tax': float,
+        'tip_amount': float,
+        'tolls_amount': float,
+        'improvement_surcharge': float,
+        'total_amount': float,
+        'congestion_surcharge': float
+    }
+
+    # timestamp data
+    parse_dates = ['tpep_pickup_datetime', 'tpep_dropoff_datetime']
+
+
+    return pd.read_csv(url, sep=",", compression="gzip", dtype=taxi_dtypes, parse_dates=parse_dates)
+```
+![load_api_data](./photos/load_api_data.png)
+
+- transform taxi data
+  - TRANSFORMER -> Python -> Generic
+  - clean the data that with passenger count is 0
+```python
+  @transformer
+  def transform(data, *args, **kwargs):
+      print(f"Preprocessing: rows with zero passengers: {data['passenger_count'].isin([0]).sum()}")
+
+      return data[data['passenger_count'] > 0]
+```
+  - assertion test
+```python
+  @test
+  def test_output(output, *args) -> None:
+      assert output['passenger_count'].isin([0]).sum() == 0, 'There are rides with 0 passengers'
+```
+
