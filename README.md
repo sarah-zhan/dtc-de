@@ -322,7 +322,7 @@ variable "dataset_name" {
 
 
 # Week2 Workflow Orchestration
-
+- Install docker
 ```python
 #clone the repo
 git clone https://github.com/mage-ai/mage-zoomcamp.git mage-zoomcamp
@@ -346,4 +346,23 @@ docker pull mageai/mageai:latest
 docker compose up
 
 # navigate to http://localhost:6789 in your browser!
+
+![mage_interface](./photos/image.png)
 ```
+
+- update io_config.yaml in mage
+  add the code below
+  ```python
+  dev:
+  POSTGRES_CONNECT_TIMEOUT: 10
+  POSTGRES_DBNAME: "{{env_var('POSTGRES_DBNAME')}}"
+  POSTGRES_SCHEMA: "{{env_var('POSTGRES_SCHEMA')}}"
+  POSTGRES_USER: "{{env_var('POSTGRES_USER')}}"
+  POSTGRES_PASSWORD: "{{env_var('POSTGRES_PASSWORD')}}"
+  POSTGRES_HOST: "{{env_var('POSTGRES_HOST')}}"
+  POSTGRES_PORT: "{{env_var('POSTGRES_PORT')}}"
+  ```
+- Edit pipeline -> new -> standard (batch) -> Edit -> Pipeline settings -> edit the pipeline name
+- Edit pipeline -> Data loader -> SQL -> Name(edit it) -> save
+- Connection (PostgreSQL) -> Profile (dev) -> choose "Use raw SQL" -> run block
+![sqlblock](sqlblock.png)
