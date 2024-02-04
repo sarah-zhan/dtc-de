@@ -320,3 +320,30 @@ variable "dataset_name" {
 - Use the gcloud SDK with the Service Account: `gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS`
 - remove credential `unset GOOGLE_APPLICATION_CREDENTIALS`
 
+
+# Week2 Workflow Orchestration
+
+```python
+#clone the repo
+git clone https://github.com/mage-ai/mage-zoomcamp.git mage-zoomcamp
+
+# navigate to folder
+cd mage-zoomcamp
+
+# check the files inside folder
+ls -la
+
+# change the name
+mv dev.env .env
+
+# build the container
+docker compose build
+
+# update the docker
+docker pull mageai/mageai:latest
+
+# start the container
+docker compose up
+
+# navigate to http://localhost:6789 in your browser!
+```
