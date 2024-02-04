@@ -416,4 +416,4 @@ use different method
   def test_output(output, *args) -> None:
       assert output['passenger_count'].isin([0]).sum() == 0, 'There are rides with 0 passengers'
 ```
-
+![transform_data](transform_data.png)
