@@ -322,7 +322,9 @@ variable "dataset_name" {
 
 
 # Week2 Workflow Orchestration
-- Install docker
+## use Mage
+
+### Install docker
 ```python
 #clone the repo
 git clone https://github.com/mage-ai/mage-zoomcamp.git mage-zoomcamp
@@ -367,7 +369,7 @@ docker compose up
 - Connection (PostgreSQL) -> Profile (dev) -> choose "Use raw SQL" -> run block
 ![sqlblock](sqlblock.png)
 
-**use api to upload data **
+### use api to upload data
 - Edit pipeline -> Python -> API -> Name(edit it) -> save
 - add url in the template url = 'https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-01.csv.gz'
 - declare deta types
@@ -427,7 +429,7 @@ docker compose up
   - Data loader -> SQL
 ![load_taxi_data_test](./photos/load_taxi_data_test.png)
 
-- connect to Google Cloud
+### connect to Google Cloud
   - create a bucket
   - create a service account -> generate a key
   - move the json file in mage_zoomcamp folder
@@ -444,3 +446,15 @@ docker compose up
     object_key = 'titanic_clean.csv'
 ```
 ![load_data_gcs](./photos/load_data_gsc.png)
+
+### put them together
+- create a new pipeline
+- Data loader: copy (drag and drop) the load_api_data
+- Transformer: copy (drag and drop) the transform_taxi_data
+- Data exporter: update code
+```python
+    bucket_name = 'your_bucket_name'
+    object_key = 'nyc_taxi_data.parquet'
+```
+- taxi data is uploaded
+![upload_taxi_data_to_gcs](./photos/upload_taxi_data_to_gcs.png
