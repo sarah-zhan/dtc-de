@@ -524,3 +524,12 @@ def transform(data, *args, **kwargs):
 ![schedule](./photos/schedule.png)
 ![enable_trigger](./photos/enable_trigger.png)
 
+### load data to gcp parameterize
+- copy load_to_gcp pipeline
+- update data exporter
+- add execution date
+```python
+    now = kwargs.get('execution_date')
+    now_fpath = now.strftime('%Y/%m/%d')
+    object_key = f'{now_fpath}/nyc_taxi_data.parquet'
+```
