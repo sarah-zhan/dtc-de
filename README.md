@@ -533,3 +533,9 @@ def transform(data, *args, **kwargs):
     now_fpath = now.strftime('%Y/%m/%d')
     object_key = f'{now_fpath}/nyc_taxi_data.parquet'
 ```
+
+### backfills data
+
+![backfill1](./photos/backfill1.png)
+
+![backfill2](./photos/backfill2.png)
