@@ -498,3 +498,29 @@ def export_data(data, *args, **kwargs):
     )
 ```
 
+### upload data from gsc to bigquery
+- create a pipeline
+- Data loader - Python - GoogleCloud Storage
+- update name
+```python
+    bucket_name = 'your_bucket_name'
+    object_key = 'nyc_taxi_data.parquet'
+```
+- Transformer (standardize column name)
+```python
+@transformer
+def transform(data, *args, **kwargs):
+    data.columns = (data.columns
+                    .str.replace(' ', '_')
+                    .str.lower()
+    )
+    return data
+```
+- Data exporter - SQL
+- connection(BigQuery)/Profile(default)/name schema, table
+![taxi_to_bigquery](./photos/taxi_to_bigquery.png)
+
+### set up schedule to upload data
+![schedule](./photos/schedule.png)
+![enable_trigger](./photos/enable_trigger.png)
+
