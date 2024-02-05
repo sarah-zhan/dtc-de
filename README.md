@@ -451,10 +451,50 @@ docker compose up
 - create a new pipeline
 - Data loader: copy (drag and drop) the load_api_data
 - Transformer: copy (drag and drop) the transform_taxi_data
+- connect the loader and transformer
+![connect_loader_transformer](connect_loader_transformer.png)
 - Data exporter: update code
 ```python
     bucket_name = 'your_bucket_name'
     object_key = 'nyc_taxi_data.parquet'
 ```
 - taxi data is uploaded
-![upload_taxi_data_to_gcs](./photos/upload_taxi_data_to_gcs.png
+![upload_taxi_data_to_gcs](./photos/upload_taxi_data_to_gcs.png)
+
+**upload data in partitions**
+- Data exporter - Python - Generic
+- connect transformer to parquest directly
+![connect_transformer_parquet](connect_transformer_parquet.png)
+```python
+import pyarrow as pa
+import pyarrow.parquet as pq
+import os
+
+if 'data_exporter' not in globals():
+    from mage_ai.data_preparation.decorators import data_exporter
+
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/home/src/data-engineering-409902-ab07d6523f32.json'
+
+bucket_name = 'zoomcamp-mage-bucket'
+project_id = 'data-engineering-409902'
+
+table_name = 'nyc_taxi_data'
+
+root_path = f'{bucket_name}/{table_name}'
+
+@data_exporter
+def export_data(data, *args, **kwargs):
+    data['tpep_pickup_date'] = data['tpep_pickup_datetime'].dt.date
+
+    table = pa.Table.from_pandas(data)
+
+    gcs = pa.fs.GcsFileSystem()
+
+    pq.write_to_dataset(
+        table,
+        root_path=root_path,
+        partition_cols=['tpep_pickup_date'],
+        filesystem=gcs
+    )
+```
+
