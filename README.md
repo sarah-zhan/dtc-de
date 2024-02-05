@@ -367,7 +367,7 @@ docker compose up
 - Connection (PostgreSQL) -> Profile (dev) -> choose "Use raw SQL" -> run block
 ![sqlblock](sqlblock.png)
 
-use different method
+**use api to upload data **
 - Edit pipeline -> Python -> API -> Name(edit it) -> save
 - add url in the template url = 'https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-01.csv.gz'
 - declare deta types
@@ -426,3 +426,21 @@ use different method
 - quick test
   - Data loader -> SQL
 ![load_taxi_data_test](./photos/load_taxi_data_test.png)
+
+- connect to Google Cloud
+  - create a bucket
+  - create a service account -> generate a key
+  - move the json file in mage_zoomcamp folder
+  - use the path method to authorize: GOOGLE_SERVICE_ACC_KEY_FILEPATH: "/home/src/your_file_name.json" (remember to remove google key block)
+  - use the test_config -> connection (BigQuery) -> Profile (Default) -> run for the test
+  ![bigquery_test](bigquery_test.png)
+  - use the example_pipeline -> run the code and generate a csv file
+  - upload that file to the bucket
+  - back to test_config
+  - Data loader -> Python - GoogleCloud Storage
+  - update
+```python
+    bucket_name = 'your_bucket_name'
+    object_key = 'titanic_clean.csv'
+```
+![load_data_gcs](./photos/load_data_gsc.png)
