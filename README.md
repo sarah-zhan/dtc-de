@@ -336,7 +336,7 @@ cd mage-zoomcamp
 ls -la
 
 # change the name
-mv dev.env .env
+cp dev.env .env
 
 # build the container
 docker compose build
@@ -356,13 +356,13 @@ docker compose up
   add the code below
   ```python
   dev:
-  POSTGRES_CONNECT_TIMEOUT: 10
-  POSTGRES_DBNAME: "{{env_var('POSTGRES_DBNAME')}}"
-  POSTGRES_SCHEMA: "{{env_var('POSTGRES_SCHEMA')}}"
-  POSTGRES_USER: "{{env_var('POSTGRES_USER')}}"
-  POSTGRES_PASSWORD: "{{env_var('POSTGRES_PASSWORD')}}"
-  POSTGRES_HOST: "{{env_var('POSTGRES_HOST')}}"
-  POSTGRES_PORT: "{{env_var('POSTGRES_PORT')}}"
+    POSTGRES_CONNECT_TIMEOUT: 10
+    POSTGRES_DBNAME: "{{env_var('POSTGRES_DBNAME')}}"
+    POSTGRES_SCHEMA: "{{env_var('POSTGRES_SCHEMA')}}"
+    POSTGRES_USER: "{{env_var('POSTGRES_USER')}}"
+    POSTGRES_PASSWORD: "{{env_var('POSTGRES_PASSWORD')}}"
+    POSTGRES_HOST: "{{env_var('POSTGRES_HOST')}}"
+    POSTGRES_PORT: "{{env_var('POSTGRES_PORT')}}"
   ```
 - Edit pipeline -> new -> standard (batch) -> Edit -> Pipeline settings -> edit the pipeline name
 - Edit pipeline -> Data loader -> SQL -> Name(edit it) -> save
@@ -539,3 +539,10 @@ def transform(data, *args, **kwargs):
 ![backfill1](./photos/backfill1.png)
 
 ![backfill2](./photos/backfill2.png)
+
+
+### Deployment
+- check google cloud credential `gcloud auth list` `gcloud storage ls`
+- download templates `git clone https://github.com/mage-ai/mage-ai-terraform-templates.git`
+- check `cd mage-ai-terraform-temp` `ls -la`
+- we use gcp `cd gcp`
