@@ -435,7 +435,7 @@ docker compose up
   - move the json file in mage_zoomcamp folder
   - use the path method to authorize: GOOGLE_SERVICE_ACC_KEY_FILEPATH: "/home/src/your_file_name.json" (remember to remove google key block)
   - use the test_config -> connection (BigQuery) -> Profile (Default) -> run for the test
-  ![bigquery_test](bigquery_test.png)
+  ![bigquery_test](./photos/bigquery_test.png)
   - use the example_pipeline -> run the code and generate a csv file
   - upload that file to the bucket
   - back to test_config
@@ -452,7 +452,7 @@ docker compose up
 - Data loader: copy (drag and drop) the load_api_data
 - Transformer: copy (drag and drop) the transform_taxi_data
 - connect the loader and transformer
-![connect_loader_transformer](connect_loader_transformer.png)
+![connect_loader_transformer](./photos/connect_loader_transformer.png)
 - Data exporter: update code
 ```python
     bucket_name = 'your_bucket_name'
@@ -464,7 +464,7 @@ docker compose up
 **upload data in partitions**
 - Data exporter - Python - Generic
 - connect transformer to parquest directly
-![connect_transformer_parquet](connect_transformer_parquet.png)
+![connect_transformer_parquet](./photos/connect_transformer_parquet.png)
 ```python
 import pyarrow as pa
 import pyarrow.parquet as pq
