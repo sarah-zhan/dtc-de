@@ -1,4 +1,8 @@
-{{ config(materialized='table') }}
+{{ 
+    config(
+        materialized='table'
+        ) 
+}}
 
 with green_tripdata as (
     select *,
