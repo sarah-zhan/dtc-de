@@ -546,3 +546,102 @@ def transform(data, *args, **kwargs):
 - download templates `git clone https://github.com/mage-ai/mage-ai-terraform-templates.git`
 - check `cd mage-ai-terraform-temp` `ls -la`
 - we use gcp `cd gcp`
+
+
+# Week3 BigQuery
+https://github.com/DataTalksClub/data-engineering-zoomcamp/tree/main/03-data-warehouse
+
+# Week4 Analysis
+- initial set up to inject all data: https://www.youtube.com/watch?v=Mork172sK_c&list=PLaNLNpjZpzwgneiI-Gl8df8GCsPYp_6Bs
+- set up dbt: https://www.youtube.com/watch?v=J0XCDyKiU64&list=PL3MmuxUbc_hJed7dXYoJw8DoCuVHhGEQb&index=42
+- make sure to create a new branch, the default branch is read only
+- under models folder, create schema.yml
+```python
+version: 2
+
+sources:
+  - name: staging
+    database: data-engineering-409902
+    schema: trips_data_all
+
+    tables:
+      - name: green_tripdata
+      - name: yellow_tripdata
+```
+
+- click "Generate model" in schema.yml file
+- macros folder -> create file ->
+
+```c
+{#
+    This macro returns the description of the payment_type
+#}
+
+{% macro get_payment_type_description(payment_type) -%}
+
+    case {{ dbt.safe_cast("payment_type", api.Column.translate_type("integer"))}}
+        when 1 then 'Credit card'
+        when 2 then 'Cash'
+        when 3 then 'No charge'
+        when 4 then 'Dispute'
+        when 5 then 'Unknown'
+        when 6 then 'Voided trip'
+        else 'EMPTY'
+    end
+
+{%- endmacro %}
+```
+  - in the stg_green_tripdata.sql, add `{{get_payment_type_description('payment_type')}} as payment_type_description`, then compile to check the result
+- dbt_util
+  - create packages.yml
+```htm
+    packages:
+    - package: dbt-labs/dbt_utils
+      version: 1.1.1
+```
+  - `dbt deps` to install
+  - in the stg_green_tripdata.sql, add in 1st line in the `select` statement `{{ dbt_utils.generate_surrogate_key(['vendor_id', 'pickup_datetime']) }} as tripid,`
+  - compile to check the result
+- check run history under target/compiled folder
+- repeat the same steps for yellow cab data
+- in seeds folder -> create taxi_zone_lookup.csv -> copy/paste the taxi_zone_lookup.csv(raw) -> build -> upload to GC
+- fact_trips.sql (be careful of the column names) details in file
+- choose `build + model +(Up/downstream)`
+- production: `dbt build --select +fact_trips+ --vars '{'is_test_run': 'false'}'`
+- install dbt-labs/codegen
+- use this code to generate model information
+```python
+{% set models_to_generate = codegen.get_models(directory='marts', prefix='fct_') %}
+{{ codegen.generate_model_yaml(
+    model_names = models_to_generate
+) }}
+```
+- add test to the schema
+-
+```python
+tests:
+          - unique:
+              serverity: warn
+          - not_null:
+              serverity: warn
+tests:
+          - relationships:
+              field: locationdid
+              to: ref('taxi_zone_lookup')
+              serverity: warn
+tests:
+          - accepted_values:
+              values: {{var ('payment_type_values')}}
+              serverity: warn
+              quote: false
+```
+- add schema.yml to core folder (same steps as another schema file)
+- `dbt docs generate`
+- ![viewdocs](./photos/viewdocs.png)
+  ![viewdocs1](./photos/viewdocs1.png)
+
+- create a new production environment
+- create a new job -> deploy -> fill in the info
+
+
+
