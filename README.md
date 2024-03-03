@@ -170,10 +170,10 @@ docker-compose down
 - we can create a config file to login gl
   - config file
     ```python
-    Host vm instance name
-    HostName your-gl-external-ip
-    User gl-username
-    IdentityFile ~/.ssh/key-name
+    Host vm-instance-name
+      HostName your-gl-external-ip (**need to update it every time you restart the instance because it changes**)
+      User gl-username
+      IdentityFile ~/.ssh/key-name
     ```
 
 ## install ananconda
