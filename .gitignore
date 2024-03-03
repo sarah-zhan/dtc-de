@@ -1,5 +1,4 @@
 ny_taxi_postgres_data/
-.ipynb_checkpoints/
 .terraform/
 .terraform.lock.hcl
 *.json
