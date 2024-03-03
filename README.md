@@ -644,4 +644,57 @@ tests:
 - create a new job -> deploy -> fill in the info
 
 
+# Week5 Spark
+## Set up
+- downloand java
+`wget https://download.java.net/java/GA/jdk11/9/GPL/openjdk-11.0.2_linux-x64_bin.tar.gz`
+`tar xzfv openjdk-11.0.2_linux-x64_bin.tar.gz`
+`export JAVA_HOME="${HOME}/spark/jdk-11.0.2"`
+`export PATH="${JAVA_HOME}/bin:${PATH}"`
+- download pyspark
+`wget https://dlcdn.apache.org/spark/spark-3.5.1/spark-3.5.1-bin-hadoop3.tgz`
+`tar xzfv spark-3.5.1-bin-hadoop3.tgz`
+`export SPARK_HOME="${HOME}/spark/spark-3.5.1-bin-hadoop3"`
+`export PATH="${SPARK_HOME}/bin:${PATH}"`
+- add these to .bashrc
+`nano .bashrc`
+`export JAVA_HOME="${HOME}/spark/jdk-11.0.2"`
+`export PATH="${JAVA_HOME}/bin:${PATH}"`
+`export SPARK_HOME="${HOME}/spark/spark-3.5.1-bin-hadoop3"`
+`export PATH="${SPARK_HOME}/bin:${PATH}"`
+- ctrl o to save, ctrl x to exit
+- terminal
+`export PYTHONPATH="${SPARK_HOME}/python/:$PYTHONPATH"`
+`export PYTHONPATH="${SPARK_HOME}/python/lib/py4j-0.10.9.7-src.zip:$PYTHONPATH"` **make sure to match the py4j-xxxx name in the folder**
+- terminal PORTS -> open new port 8080
+- start notebook `jupyter notebook`
+  - choose the link and open the the notebook in the browser
+  - create a file for testing
+```python
+  import pyspark
+  pyspark.__version__
+  pyspark.__file__
+```
+- start a spark instance
+```python
+from pyspark.sql import SparkSession
 
+spark = SparkSession.builder \
+        .master("local[*]") \
+        .appName("test") \
+        .getOrCreate()
+```
+- download the data
+`!wget https://s3.amazonaws.com/nyc-tlc/misc/taxi+_zone_lookup.csv`
+- read file
+```python
+df = spark.read \
+    .option('header', 'true') \
+    .csv('taxi+_zone_lookup.csv')
+```
+- convert to parquet
+```python
+df.write.parquet('zones')
+```
+- terminal -> PORTS - open a new port 4040
+- go to `localhost:4040` to check all the spark jobs we just did
