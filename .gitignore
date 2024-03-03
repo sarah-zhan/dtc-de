@@ -2,6 +2,7 @@ ny_taxi_postgres_data/
 .terraform/
 .terraform.lock.hcl
 *.json
+.env
 ```
 # Local .terraform directories
 **/.terraform/*
