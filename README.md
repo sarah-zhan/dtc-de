@@ -319,4 +319,5 @@ variable "dataset_name" {
 - Set the Environment Variable: `export GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/key-file.json`
 - Use the gcloud SDK with the Service Account: `gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS`
 - remove credential `unset GOOGLE_APPLICATION_CREDENTIALS`
+- stop the instance `sudo shutdown`
 
