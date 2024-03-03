@@ -699,3 +699,4 @@ df.write.parquet('zones')
 ```
 - terminal -> PORTS - open a new port 4040
 - go to `localhost:4040` to check all the spark jobs we just did
+![spark](./photos/spark.png)
