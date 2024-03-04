@@ -3,6 +3,10 @@ ny_taxi_postgres_data/
 .terraform.lock.hcl
 *.json
 .env
+WEEK5-PYSPARK/data
+fhvhv_tripdata_2021-01.parquet
+green_tripdata_*.parquet
+yellow_tripdata_*.parquet
 ```
 # Local .terraform directories
 **/.terraform/*

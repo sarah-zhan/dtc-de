@@ -703,3 +703,12 @@ df.write.parquet('zones')
 
 ## use pyspark
 follow `pyspark.ipynb`
+
+## download data
+- create download_data.sh
+- make it executible `chmod +x download_data.sh`
+- run it `./download_data.sh yellow 2021` # change "yellow" "2021" to download different data
+- data have not git to remote due to large files
+- `export PYTHONPATH="${SPARK_HOME}/python/:$PYTHONPATH"`
+  `export PYTHONPATH="${SPARK_HOME}/python/lib/py4j-0.10.9.7-src.zip:$PYTHONPATH"`
+  `jupyter notebook`
