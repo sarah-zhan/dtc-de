@@ -712,3 +712,10 @@ follow `pyspark.ipynb`
 - `export PYTHONPATH="${SPARK_HOME}/python/:$PYTHONPATH"`
   `export PYTHONPATH="${SPARK_HOME}/python/lib/py4j-0.10.9.7-src.zip:$PYTHONPATH"`
   `jupyter notebook`
+
+## practise the spark sql/groupby
+`WEEK5-PYSPARK/groupby_join.ipynb`, `WEEK5-PYSPARK/groupby_join.ipynb`
+
+## upload to google cloud
+`gsutil -m cp -r data/green/ gs://zoomcamp-mage-bucket/pq/green`
+`gsutil -m cp -r data/yellow/ gs://zoomcamp-mage-bucket/pq/yellow`
