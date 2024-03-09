@@ -757,3 +757,39 @@ df_green = spark.read.parquet("gs://zoomcamp-mage-bucket/pq/green/*")
 
 df_green.show(5)
 ```
+## local spark cluster
+```python
+cd spark-3.5.1-bin-hadoop3
+echo $SPARK_HOME
+./sbin/start-master.sh
+./sbin/start-worker.sh spark://localhost:7077
+```
+## convert notebook to script
+- `jupyter nbconvert --to=script spark_sql.ipynb`
+
+## run the script
+`export PYTHONPATH="${SPARK_HOME}/python/:$PYTHONPATH"`
+`export PYTHONPATH="${SPARK_HOME}/python/lib/py4j-0.10.9.7-src.zip:$PYTHONPATH"`
+
+```python
+python3 spark_sql.py \
+    --input_green=data/green/* \
+    --input_yellow=data/yellow/* \
+    --output=data/report
+```
+OR:
+```python
+URL="spark://localhost:7077"
+spark-submit \
+  --master="${URL}" \
+  spark_sql.py \
+    --input_green=data/green/* \
+    --input_yellow=data/yellow/* \
+    --output=data/report
+```
+
+STOP
+```python
+./sbin/stop-worker.sh
+./sbin/stop-master.sh
+```
