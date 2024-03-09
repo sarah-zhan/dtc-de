@@ -716,6 +716,44 @@ follow `pyspark.ipynb`
 ## practise the spark sql/groupby
 `WEEK5-PYSPARK/groupby_join.ipynb`, `WEEK5-PYSPARK/groupby_join.ipynb`
 
-## upload to google cloud
+## upload data to google cloud
 `gsutil -m cp -r data/green/ gs://zoomcamp-mage-bucket/pq/green`
 `gsutil -m cp -r data/yellow/ gs://zoomcamp-mage-bucket/pq/yellow`
+
+## download the connector Hadoop
+`gsutil cp gs://hadoop-lib/gcs/gcs-connector-hadoop3-2.2.5.jar gcs-connector-hadoop3-2.2.5.jar`
+
+## set up
+spark_gc.ipynb
+```python
+import pyspark
+from pyspark.sql import SparkSession
+from pyspark.conf import SparkConf
+from pyspark.context import SparkContext
+
+credentials_location = "/home/labber/dtc-de/mage-zoomcamp/data-engineering-409902-0ed8148f1650.json"
+
+conf = SparkConf() \
+    .setMaster('local[*]') \
+    .setAppName('test') \
+    .set("spark.jars", "./lib/gcs-connector-hadoop3-2.2.5.jar") \
+    .set("spark.hadoop.google.cloud.auth.service.account.enable", "true") \
+    .set("spark.hadoop.google.cloud.auth.service.account.json.keyfile", credentials_location)
+
+sc = SparkContext(conf=conf)
+
+hadoop_conf = sc._jsc.hadoopConfiguration()
+
+hadoop_conf.set("fs.AbstractFileSystem.gs.impl",  "com.google.cloud.hadoop.fs.gcs.GoogleHadoopFS")
+hadoop_conf.set("fs.gs.impl", "com.google.cloud.hadoop.fs.gcs.GoogleHadoopFileSystem")
+hadoop_conf.set("fs.gs.auth.service.account.json.keyfile", credentials_location)
+hadoop_conf.set("fs.gs.auth.service.account.enable", "true")
+
+spark = SparkSession.builder \
+    .config(conf=sc.getConf()) \
+    .getOrCreate()
+
+df_green = spark.read.parquet("gs://zoomcamp-mage-bucket/pq/green/*")
+
+df_green.show(5)
+```
