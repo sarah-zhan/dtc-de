@@ -793,3 +793,31 @@ STOP
 ./sbin/stop-worker.sh
 ./sbin/stop-master.sh
 ```
+
+## Dataproc Cluster
+- set up Dataproc in google cloud (cluster type: Single Node)
+- choose the same region as the bucket
+- pick Jupyter Notebook, Docker
+- the rest keeps as default
+- click on the cluster -> submit job -> job type: PySpark
+- in terminal submit the script file `gsutil cp spark_sql.py gs://zoomcamp-mage-bucket/code/spark_sql.py`
+- Main python file `gs://zoomcamp-mage-bucket/code/spark_sql.py`
+- Arguments: (input one line each time and enter)
+```python
+  --input_green=gs://zoomcamp-mage-bucket/pq/green/* \
+  --input_yellow=gs://zoomcamp-mage-bucket/pq/yellow/* \
+  --output=gs://zoomcamp-mage-bucket/report
+```
+- submit
+![dataproc](./photos/dataproc.png)
+
+gcloud method
+```python
+gcloud dataproc jobs submit pyspark \
+    --cluster=de-zoomcamp-cluster \
+    --region=us-west1 \
+    gs://zoomcamp-mage-bucket/code/spark_sql.py \
+    --input_green=gs://zoomcamp-mage-bucket/pq/green/*
+    --input_yellow=gs://zoomcamp-mage-bucket/pq/yellow/* \
+    --output=gs://zoomcamp-mage-bucket/report
+```

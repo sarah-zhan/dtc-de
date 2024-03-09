@@ -19,9 +19,7 @@ output = args.output
 
 spark = SparkSession.builder \
     .appName("spark_sql") \
-    .config("spark.ui.enabled", "true") \
     .getOrCreate()
-    # .master("spark://localhost:7077") \
 
 # load data
 df_green = spark.read.parquet(input_green)
@@ -57,12 +55,6 @@ common_columns = [
     'payment_type',
     'congestion_surcharge'
     ]
-
-yellow_columns = set(df_yellow.columns)
-
-for col in df_green.columns:
-    if col in yellow_columns:
-        common_columns.append(col)
 
 df_green_sel = df_green \
     .select(common_columns) \
