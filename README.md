@@ -811,13 +811,40 @@ STOP
 - submit
 ![dataproc](./photos/dataproc.png)
 
-gcloud method
+gcloud method (make sure to add IAM access **dataproc admin**)
+https://cloud.google.com/dataproc/docs/guides/submit-job#dataproc-submit-job-gcloud
+
 ```python
 gcloud dataproc jobs submit pyspark \
     --cluster=de-zoomcamp-cluster \
     --region=us-west1 \
     gs://zoomcamp-mage-bucket/code/spark_sql.py \
-    --input_green=gs://zoomcamp-mage-bucket/pq/green/*
-    --input_yellow=gs://zoomcamp-mage-bucket/pq/yellow/* \
-    --output=gs://zoomcamp-mage-bucket/report
+    -- \
+      --input_green=gs://zoomcamp-mage-bucket/pq/green/* \
+      --input_yellow=gs://zoomcamp-mage-bucket/pq/yellow/* \
+      --output=gs://zoomcamp-mage-bucket/report
+```
+
+## BigQuery
+https://cloud.google.com/dataproc/docs/tutorials/bigquery-connector-spark-example#pyspark
+
+- use the script and modify it to bigquery
+```python
+ df_result.write.format('bigquery') \
+    .option('table', output) \
+    .save()
+```
+- upload spark_sql_big_query.py to storage
+`gsutil cp spark_sql_big_query.py gs://zoomcamp-mage-bucket/code/spark_sql_big_query.py`
+
+```python
+gcloud dataproc jobs submit pyspark \
+    --cluster=de-zoomcamp-cluster \
+    --region=us-west1 \
+    --jars=gs://spark-lib/bigquery/spark-bigquery-latest_2.12.jar \
+    gs://zoomcamp-mage-bucket/code/spark_sql_big_query.py \
+    -- \
+      --input_green=gs://zoomcamp-mage-bucket/pq/green/* \
+      --input_yellow=gs://zoomcamp-mage-bucket/pq/yellow/* \
+      --output=trips_data_all.reports
 ```
