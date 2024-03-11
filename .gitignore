@@ -8,6 +8,8 @@ fhvhv_tripdata_2021-01.parquet
 green_tripdata_*.parquet
 yellow_tripdata_*.parquet
 fhv_tripdata_2019-10.csv.gz
+fhv_tripdata_2019-10.parquet
+WEEK5-PYSPARK/fhvhv
 ```
 # Local .terraform directories
 **/.terraform/*
